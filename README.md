@@ -70,59 +70,59 @@ const relation = new ModelRelationshipFacade(Person)
     .getRelationships();
 
 console.log(relation);
-Output:
-{
-    country: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: Country,
-      join: {
-        from: 'persons.countryId',
-        to: 'countries.id'
-      }
-    },
-    animals: {
-      relation: Model.HasManyRelation,
-      modelClass: Animal,
-      join: {
-        from: 'persons.id',
-        to: 'animals.personId'
-      }
-    },
-    contact: {
-      relation: Model.HasOneRelation,
-      modelClass: Contact,
-      join: {
-        from: 'persons.id',
-        to: 'contacts.personId'
-      }
-    },
-    activities: {
-      relation: Model.ManyToManyRelation,
-      modelClass: Activity,
-      join: {
-        from: 'persons.id',
-        through: {
-          // activities_persons is the join table.
-          from: 'activities_persons.personId',
-          to: 'activities_persons.activityId'
-        },
-        to: 'activities.id'
-      }
-    },
-    vehicle: {
-      relation: Model.HasOneThroughRelation,
-      modelClass: Vehicle,
-      join: {
-        from: 'persons.id',
-        through: {
-          // activities_persons is the join table.
-          from: 'activities_persons.personId',
-          to: 'activities_persons.activityId'
-        },
-        to: 'vehicles.id'
-      }
-    }
-};
+// Output:
+// {
+//     country: {
+//       relation: Model.BelongsToOneRelation,
+//       modelClass: Country,
+//       join: {
+//         from: 'persons.countryId',
+//         to: 'countries.id'
+//       }
+//     },
+//     animals: {
+//       relation: Model.HasManyRelation,
+//       modelClass: Animal,
+//       join: {
+//         from: 'persons.id',
+//         to: 'animals.personId'
+//       }
+//     },
+//     contact: {
+//       relation: Model.HasOneRelation,
+//       modelClass: Contact,
+//       join: {
+//         from: 'persons.id',
+//         to: 'contacts.personId'
+//       }
+//     },
+//     activities: {
+//       relation: Model.ManyToManyRelation,
+//       modelClass: Activity,
+//       join: {
+//         from: 'persons.id',
+//         through: {
+//           // activities_persons is the join table.
+//           from: 'activities_persons.personId',
+//           to: 'activities_persons.activityId'
+//         },
+//         to: 'activities.id'
+//       }
+//     },
+//     vehicle: {
+//       relation: Model.HasOneThroughRelation,
+//       modelClass: Vehicle,
+//       join: {
+//         from: 'persons.id',
+//         through: {
+//           // activities_persons is the join table.
+//           from: 'activities_persons.personId',
+//           to: 'activities_persons.activityId'
+//         },
+//         to: 'vehicles.id'
+//       }
+//     }
+// };
 
 ```
 
