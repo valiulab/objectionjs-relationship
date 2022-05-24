@@ -59,7 +59,7 @@ class Animal extends Model {
 #### Chaining Relationships
 
 ```js
-// Those are Example models like Person or Animal.
+// Thoses Models are example models like Person or Animal.
 
 const relation = new ModelRelationshipFacade(Person)
     .add(Country, RelationshipEnum.BelongsToOneRelation)
@@ -128,7 +128,7 @@ Output:
 
 ## Options
 
-**IObjectionModelRelationshipAddConfig:** This interface is the option object that you can send to the add function and override the relation fields.
+**IObjectionModelRelationshipAddConfig:** This interface are the option that you can send to the add function and override the relation fields.
 
 These options can be provided when instantiating the plugin:
 
