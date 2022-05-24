@@ -59,7 +59,7 @@ class Animal extends Model {
 #### Chaining Relationships
 
 ```js
-// Those are Example models like Person or Animal
+// Those are Example models like Person or Animal.
 
 const relation = new ModelRelationshipFacade(Person)
     .add(Country, RelationshipEnum.BelongsToOneRelation)
