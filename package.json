@@ -1,24 +1,43 @@
 {
   "name": "objectionjs-relationship",
   "version": "1.0.0",
-  "description": "",
+  "description": "ObjectionJs Relationship facade to make relationship mapper more easier",
   "source": "src/index.ts",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "npx tsc",
-    "test": "jest"
+    "test": "jest",
+    "doc": "typedoc --out docs src/index.ts",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
   },
-  "keywords": [],
-  "author": "",
+  "author": "ValiuLab",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^27.5.1",
     "jest": "^28.1.0",
     "ts-jest": "^28.0.3",
+    "typedoc": "^0.22.15",
     "typescript": "^4.6.4"
   },
   "dependencies": {
     "objection": "^3.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valiulab-core/objectionjs-relationship.git"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "keywords": [
+    "objection",
+    "relation",
+    "relationship",
+    "mapping",
+    "relationMappings"
+  ]
 }
