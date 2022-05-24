@@ -4,6 +4,10 @@
 
 This plugin provide a way to create relationship objects between [Objection.js](https://github.com/Vincit/objection.js/) models.
 
+## Doc
+
+For more documentation, you can view the [Github page](https://valiulab-core.github.io/objectionjs-relationship/) of this repository.
+
 ## Installation
 
 ### NPM
