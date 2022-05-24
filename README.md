@@ -165,3 +165,7 @@ It will be awesome if you can help us evolve `objectionjs-relationship`. Want to
 4. Run the tests: `npm test`.
 
 5. Create a [Pull Request](https://github.com/valiulab-core/objectionjs-relationship/compare).
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
