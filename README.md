@@ -1,4 +1,4 @@
-# Relation maker for Objection.js
+# :rocket: Relation maker for Objection.js
 
 [![npm](https://img.shields.io/npm/v/objectionjs-relationship.svg?style=flat-square)](https://npmjs.org/package/objectionjs-relationship)
 
