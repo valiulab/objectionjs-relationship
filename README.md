@@ -4,9 +4,9 @@
 
 ![node](https://img.shields.io/node/v/objectionjs-relationship.svg?style=flat-square)
 
-[![Build Status](https://img.shields.io/travis/seegno/objectionjs-relationship/main.svg?style=flat-square)](https://travis-ci.org/seegno/objectionjs-relationship)
+[![Build Status](https://img.shields.io/travis/valiulab-core/objectionjs-relationship/main.svg?style=flat-square)](https://travis-ci.org/valiulab-core/objectionjs-relationship)
 
-[![Coverage Status](https://img.shields.io/coveralls/seegno/objectionjs-relationship/main.svg?style=flat-square)](https://coveralls.io/github/seegno/objectionjs-relationship?branch=main)
+[![Coverage Status](https://img.shields.io/coveralls/valiulab-core/objectionjs-relationship/main.svg?style=flat-square)](https://coveralls.io/github/valiulab-core/objectionjs-relationship?branch=main)
 
 This plugin provide a way to create relationship objects between [Objection.js](https://github.com/Vincit/objection.js/) models.
 
