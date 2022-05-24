@@ -1,0 +1,198 @@
+import { RelationshipEnum } from '../enums/relationship.enum';
+import { StringUtils } from '../utils/string.utils';
+import { Model, ModelClass, RelationType } from 'objection';
+import { IObjectionModelRelationship, IObjectionModelRelationshipAddConfig, IObjectionModelRelationshipSchema } from '../interfaces/relationships.interface';
+
+export class ModelRelationshipFacade<T extends Model> {
+    private _relationshipModel: IObjectionModelRelationship<T> = {};
+
+    constructor(private _modelClass: ModelClass<T>) { }
+
+    set model(modelClass: ModelClass<T>) {
+        this._modelClass = modelClass;
+    }
+
+    /**
+     * Return the relationship model created from adding relationship on "Add" method
+     *
+     * @return {*}  {IObjectionModelRelationship<T>}
+     * @memberof ModelRelationshipFacade
+     */
+    public getRelationships(): IObjectionModelRelationship<T> {
+        return this._relationshipModel;
+    }
+
+    /**
+     * Return the name of the relationship between the origin model to the end model.
+     * This is created based on the relationship between them.
+     *
+     * @private
+     * @param {(ModelClass<T> | string)} modelClass
+     * @param {RelationshipEnum} relation
+     * @return {*}  {string}
+     * @memberof ModelRelationshipFacade
+     */
+    private getRelationshipName(modelClass: ModelClass<T> | string, relation: RelationshipEnum): string {
+        if (modelClass instanceof String || typeof modelClass == 'string')
+            return modelClass.toString();
+        return relation == RelationshipEnum.HasManyRelation || relation == RelationshipEnum.ManyToManyRelation
+            ? StringUtils.pluralize(StringUtils.toLowerFirstLetter(modelClass.name)) //this.pluralizeByRelationship(modelClass.name, relation)
+            : StringUtils.toLowerFirstLetter(modelClass.name);
+    }
+
+    /**
+     * Return the field name of of the foreign key
+     *
+     * @private
+     * @param {(ModelClass<T> | string)} modelClass
+     * @return {*}  {string}
+     * @memberof ModelRelationshipFacade
+     */
+    private getForeignKeyFieldName(modelClass: ModelClass<T> | string): string {
+        return modelClass instanceof String || typeof modelClass == 'string'
+            ? modelClass.toString()
+            : `${StringUtils.toLowerFirstLetter(modelClass.name)}Id`;
+    }
+
+    /**
+     * Return the field name of "from" prop of "join" section
+     *
+     * @private
+     * @param {(ModelClass<T> | string)} modelClass
+     * @param {RelationshipEnum} relation
+     * @return {*}  {string}
+     * @memberof ModelRelationshipFacade
+     */
+    private getFromField(modelClass: ModelClass<T> | string, relation: RelationshipEnum): string {
+        if (relation != RelationshipEnum.BelongsToOneRelation)
+            return 'id';
+
+        return this.getForeignKeyFieldName(modelClass);
+    }
+
+    /**
+     * Return the field name of "to" prop of "join" section
+     *
+     * @private
+     * @param {(ModelClass<T> | string)} modelClass
+     * @param {RelationshipEnum} relation
+     * @return {*}  {string}
+     * @memberof ModelRelationshipFacade
+     */
+    private geToField(modelClass: ModelClass<T> | string, relation: RelationshipEnum): string {
+        if (relation != RelationshipEnum.HasManyRelation && relation != RelationshipEnum.HasOneRelation)
+            return 'id';
+
+        return this.getForeignKeyFieldName(modelClass);
+    }
+
+    /**
+     * Get the table name of the static prop in ModelClass
+     *
+     * @private
+     * @param {(ModelClass<T> | string)} modelClass
+     * @return {*}  {string}
+     * @memberof ModelRelationshipFacade
+     */
+    private getTableName(modelClass: ModelClass<T> | string): string {
+        return modelClass instanceof String || typeof modelClass == 'string'
+            ? modelClass.toString()
+            : modelClass.tableName;
+    }
+
+    /**
+     * Get the many to many table name (table1_table2)
+     *
+     * @private
+     * @param {(ModelClass<T> | string)} modelClass
+     * @return {*}  {string}
+     * @memberof ModelRelationshipFacade
+     */
+    private getThroughTable(modelClass: ModelClass<T> | string): string {
+        return StringUtils.orderAlphabetically([
+            this._modelClass.tableName,
+            this.getTableName(modelClass)
+        ]).join('_');
+    }
+
+    /**
+     * Return model RelationType based on the enum
+     *
+     * @param {RelationshipEnum} relationshipEnum
+     * @return {*}  {RelationType}
+     * @memberof ModelRelationshipFacade
+     */
+    public getRelationshipType(relationshipEnum: RelationshipEnum): RelationType {
+        let relation: RelationType;
+        switch (relationshipEnum) {
+            case RelationshipEnum.BelongsToOneRelation:
+                relation = Model.BelongsToOneRelation;
+                break;
+            case RelationshipEnum.HasManyRelation:
+                relation = Model.HasManyRelation;
+                break;
+            case RelationshipEnum.HasOneRelation:
+                relation = Model.HasOneRelation;
+                break;
+            case RelationshipEnum.ManyToManyRelation:
+                relation = Model.ManyToManyRelation;
+                break;
+            case RelationshipEnum.HasOneThroughRelation:
+                relation = Model.HasOneThroughRelation;
+                break;
+            default:
+                throw new Error('Invalid relationship schema.')
+        }
+        return relation;
+    }
+
+    /**
+     * Create a relationship and add it inside of the class, saving the relationship mapping model inside.
+     * It will be able to get from the getter.
+     * Return the same class for chaining pattern.
+     *
+     * @param {(ModelClass<T> | string)} modelClass
+     * @param {RelationshipEnum} relationshipTypeEnum
+     * @param {IObjectionModelRelationshipAddConfig} [config]
+     * @return {*} 
+     * @memberof ModelRelationshipFacade
+     */
+    public add(modelClass: ModelClass<T> | string, relationshipTypeEnum: RelationshipEnum, config?: IObjectionModelRelationshipAddConfig) {
+        if (((modelClass instanceof String || typeof modelClass == 'string') && !modelClass) || !(modelClass as ModelClass<T>).tableName)
+            throw new Error('Model class param is empty or do not have tableName defined');
+
+        if (!this._modelClass.tableName)
+            throw new Error('Base Model class passed on constructor do not have tableName defined');
+
+        const fromTable = config?.fromTable ?? this._modelClass.tableName;
+        const toTable = config?.toTable ?? this.getTableName(modelClass);
+        const fromField = config?.fromField ?? this.getFromField(modelClass, relationshipTypeEnum);
+        const toField = config?.toField ?? this.geToField(this._modelClass, relationshipTypeEnum);
+        const relation: RelationType = this.getRelationshipType(relationshipTypeEnum);
+        const relationship: IObjectionModelRelationshipSchema<T> = {
+            relation,
+            modelClass,
+            join: {
+                from: `${fromTable}.${fromField}`,
+                to: `${toTable}.${toField}`,
+                ...config,
+            }
+        }
+
+        if (relationshipTypeEnum == RelationshipEnum.ManyToManyRelation || relationshipTypeEnum == RelationshipEnum.HasOneThroughRelation) {
+            const throughTable = this.getThroughTable(modelClass);
+            relationship.join = {
+                ...relationship.join,
+                through: {
+                    from: `${throughTable}.${this.getForeignKeyFieldName(this._modelClass)}`,
+                    to: `${throughTable}.${this.getForeignKeyFieldName(modelClass)}`,
+                    ...config?.through
+                }
+            }
+        }
+
+        this._relationshipModel[this.getRelationshipName(modelClass, relationshipTypeEnum)] = relationship;
+
+        return this;
+    }
+}
