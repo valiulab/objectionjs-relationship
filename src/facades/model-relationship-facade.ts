@@ -108,9 +108,9 @@ export class ModelRelationshipFacade<T extends Model> {
      * @return {*}  {string}
      * @memberof ModelRelationshipFacade
      */
-    private getThroughTable(modelClass: ModelClass<T> | string): string {
+    public getThroughTable(modelClass: ModelClass<T> | string, optModelClass?: ModelClass<T>): string {
         return StringUtils.orderAlphabetically([
-            this._modelClass.tableName,
+            optModelClass ? optModelClass.tableName : this._modelClass.tableName,
             this.getTableName(modelClass)
         ]).join('_');
     }
