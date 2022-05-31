@@ -66,68 +66,65 @@ class Animal extends Model {
 // Thoses Models are example models like Person or Animal.
 
 const relation = new ModelRelationshipFacade(Person)
-    .add(Country, RelationshipEnum.BelongsToOneRelation)
-    .add(Animal, RelationshipEnum.HasManyRelation)
-    .add(Contact, RelationshipEnum.HasOneRelation)
-    .add(Activity, RelationshipEnum.ManyToManyRelation)
-    .add(Vehicle, RelationshipEnum.HasOneThroughRelation)
-    .getRelationships();
+  .add(Country, RelationshipEnum.BelongsToOneRelation)
+  .add(Animal, RelationshipEnum.HasManyRelation)
+  .add(Contact, RelationshipEnum.HasOneRelation)
+  .add(Activity, RelationshipEnum.ManyToManyRelation)
+  .add(Vehicle, RelationshipEnum.HasOneThroughRelation)
+  .getRelationships();
 
 console.log(relation);
 // Output:
 // {
-//     country: {
+//   country: {
 //       relation: Model.BelongsToOneRelation,
 //       modelClass: Country,
 //       join: {
-//         from: 'persons.countryId',
-//         to: 'countries.id'
+//           from: 'persons.countryId',
+//           to: 'countries.id'
 //       }
-//     },
-//     animals: {
+//   },
+//   animals: {
 //       relation: Model.HasManyRelation,
 //       modelClass: Animal,
 //       join: {
-//         from: 'persons.id',
-//         to: 'animals.personId'
+//           from: 'persons.id',
+//           to: 'animals.personId'
 //       }
-//     },
-//     contact: {
+//   },
+//   contact: {
 //       relation: Model.HasOneRelation,
 //       modelClass: Contact,
 //       join: {
-//         from: 'persons.id',
-//         to: 'contacts.personId'
+//           from: 'persons.id',
+//           to: 'contacts.personId'
 //       }
-//     },
-//     activities: {
+//   },
+//   activities: {
 //       relation: Model.ManyToManyRelation,
 //       modelClass: Activity,
 //       join: {
-//         from: 'persons.id',
-//         through: {
-//           // activities_persons is the join table.
-//           from: 'activities_persons.personId',
-//           to: 'activities_persons.activityId'
-//         },
-//         to: 'activities.id'
+//           from: 'persons.id',
+//           through: {
+//               from: 'activities_persons.personId',
+//               to: 'activities_persons.activityId'
+//           },
+//           to: 'activities.id'
 //       }
-//     },
-//     vehicle: {
+//   },
+//   vehicle: {
 //       relation: Model.HasOneThroughRelation,
 //       modelClass: Vehicle,
 //       join: {
-//         from: 'persons.id',
-//         through: {
-//           // activities_persons is the join table.
-//           from: 'activities_persons.personId',
-//           to: 'activities_persons.activityId'
-//         },
-//         to: 'vehicles.id'
+//           from: 'persons.id',
+//           through: {
+//               from: 'persons_vehicles.personId',
+//               to: 'persons_vehicles.vehicleId'
+//           },
+//           to: 'vehicles.id'
 //       }
-//     }
+//   }
 // };
-
 ```
 
 ## Options

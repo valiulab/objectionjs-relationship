@@ -10,6 +10,22 @@ class Animal extends Model {
     static tableName = 'animals';
 }
 
+class Country extends Model {
+    static tableName = 'countries';
+}
+
+class Contact extends Model {
+    static tableName = 'contacts';
+}
+
+class Activity extends Model {
+    static tableName = 'activities';
+}
+
+class Vehicle extends Model {
+    static tableName = 'vehicles';
+}
+
 
 describe("[Main Facade Test]", () => {
 
@@ -97,5 +113,64 @@ describe("[Main Facade Test]", () => {
                 }
             }
         });
+    });
+
+    it("should return all relationships object", () => {
+        expect(new ModelRelationshipFacade(Person)
+            .add(Country, RelationshipEnum.BelongsToOneRelation)
+            .add(Animal, RelationshipEnum.HasManyRelation)
+            .add(Contact, RelationshipEnum.HasOneRelation)
+            .add(Activity, RelationshipEnum.ManyToManyRelation)
+            .add(Vehicle, RelationshipEnum.HasOneThroughRelation).getRelationships())
+            .toEqual({
+                country: {
+                    relation: Model.BelongsToOneRelation,
+                    modelClass: Country,
+                    join: {
+                        from: 'persons.countryId',
+                        to: 'countries.id'
+                    }
+                },
+                animals: {
+                    relation: Model.HasManyRelation,
+                    modelClass: Animal,
+                    join: {
+                        from: 'persons.id',
+                        to: 'animals.personId'
+                    }
+                },
+                contact: {
+                    relation: Model.HasOneRelation,
+                    modelClass: Contact,
+                    join: {
+                        from: 'persons.id',
+                        to: 'contacts.personId'
+                    }
+                },
+                activities: {
+                    relation: Model.ManyToManyRelation,
+                    modelClass: Activity,
+                    join: {
+                        from: 'persons.id',
+                        through: {
+                            from: 'activities_persons.personId',
+                            to: 'activities_persons.activityId'
+                        },
+                        to: 'activities.id'
+                    }
+                },
+                vehicle: {
+                    relation: Model.HasOneThroughRelation,
+                    modelClass: Vehicle,
+                    join: {
+                        from: 'persons.id',
+                        through: {
+                            from: 'persons_vehicles.personId',
+                            to: 'persons_vehicles.vehicleId'
+                        },
+                        to: 'vehicles.id'
+                    }
+                }
+            });
     });
 });
