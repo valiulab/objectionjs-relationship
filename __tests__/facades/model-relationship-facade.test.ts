@@ -176,11 +176,11 @@ describe("[Main Facade Test]", () => {
 
     it("should return all relationships object based in shortcuts", () => {
         expect(new ModelRelationshipFacade(Person)
-            .belongsToOneRelation(Country)
-            .hasManyRelation(Animal)
-            .hasOneRelation(Contact)
-            .manyToManyRelation(Activity)
-            .hasOneThroughRelation(Vehicle).getRelationships())
+            .belongsToOne(Country)
+            .hasMany(Animal)
+            .hasOne(Contact)
+            .manyToMany(Activity)
+            .hasOneThrough(Vehicle).getRelationships())
             .toEqual({
                 country: {
                     relation: Model.BelongsToOneRelation,
