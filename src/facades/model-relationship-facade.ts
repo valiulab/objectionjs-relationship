@@ -204,7 +204,7 @@ export class ModelRelationshipFacade<T extends Model> {
      * @return {ModelRelationshipFacade}  {this}
      * @memberof ModelRelationshipFacade
      */
-    public belongsToOneRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+    public belongsToOne(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
         return this.add(modelClass, RelationshipEnum.BelongsToOneRelation, config);
     }
 
@@ -216,7 +216,7 @@ export class ModelRelationshipFacade<T extends Model> {
      * @return {ModelRelationshipFacade}  {this}
      * @memberof ModelRelationshipFacade
      */
-    public hasManyRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+    public hasMany(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
         return this.add(modelClass, RelationshipEnum.HasManyRelation, config);
     }
 
@@ -228,7 +228,7 @@ export class ModelRelationshipFacade<T extends Model> {
     * @return {ModelRelationshipFacade}  {this}
     * @memberof ModelRelationshipFacade
     */
-    public hasOneRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+    public hasOne(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
         return this.add(modelClass, RelationshipEnum.HasOneRelation, config);
     }
 
@@ -240,7 +240,7 @@ export class ModelRelationshipFacade<T extends Model> {
     * @return {ModelRelationshipFacade}  {this}
     * @memberof ModelRelationshipFacade
     */
-    public manyToManyRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+    public manyToMany(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
         return this.add(modelClass, RelationshipEnum.ManyToManyRelation, config);
     }
 
@@ -252,7 +252,7 @@ export class ModelRelationshipFacade<T extends Model> {
      * @return {ModelRelationshipFacade}  {this}
      * @memberof ModelRelationshipFacade
      */
-    public hasOneThroughRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+    public hasOneThrough(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
         return this.add(modelClass, RelationshipEnum.HasOneThroughRelation, config);
     }
 }
