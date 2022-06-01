@@ -43,10 +43,17 @@ class Person extends Model {
 class Animal extends Model {
   static tableName = "animals";
 
+  /** Example 1: */
+  static relationMappings = new ModelRelationshipFacade(Animal)
+    .belongsToOne(Person)
+    .getRelationships();
+
+  /** Example 2: Or you can use the add function, sending the relation type */
   static relationMappings = new ModelRelationshipFacade(Animal)
     .add(Person, RelationshipEnum.BelongsToOneRelation)
     .getRelationships();
 
+  // Result:
   // static relationMappings: {
   //     animal: {
   //         relation: Model.BelongsToOneRelation,
@@ -65,7 +72,16 @@ class Animal extends Model {
 ```js
 // Thoses Models are example models like Person or Animal.
 
+/** Example 1 */
 const relation = new ModelRelationshipFacade(Person)
+  .belongsToOne(Country)
+  .hasMany(Animal)
+  .hasOne(Contact)
+  .manyToMany(Activity)
+  .hasOneThrough(Vehicle);
+
+/** Example 2 */
+const relationWithAddFunction = new ModelRelationshipFacade(Person)
   .add(Country, RelationshipEnum.BelongsToOneRelation)
   .add(Animal, RelationshipEnum.HasManyRelation)
   .add(Contact, RelationshipEnum.HasOneRelation)
@@ -73,7 +89,6 @@ const relation = new ModelRelationshipFacade(Person)
   .add(Vehicle, RelationshipEnum.HasOneThroughRelation)
   .getRelationships();
 
-console.log(relation);
 // Output:
 // {
 //   country: {
