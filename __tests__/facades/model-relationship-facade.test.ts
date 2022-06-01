@@ -173,4 +173,63 @@ describe("[Main Facade Test]", () => {
                 }
             });
     });
+
+    it("should return all relationships object based in shortcuts", () => {
+        expect(new ModelRelationshipFacade(Person)
+            .belongsToOneRelation(Country)
+            .hasManyRelation(Animal)
+            .hasOneRelation(Contact)
+            .manyToManyRelation(Activity)
+            .hasOneThroughRelation(Vehicle).getRelationships())
+            .toEqual({
+                country: {
+                    relation: Model.BelongsToOneRelation,
+                    modelClass: Country,
+                    join: {
+                        from: 'persons.countryId',
+                        to: 'countries.id'
+                    }
+                },
+                animals: {
+                    relation: Model.HasManyRelation,
+                    modelClass: Animal,
+                    join: {
+                        from: 'persons.id',
+                        to: 'animals.personId'
+                    }
+                },
+                contact: {
+                    relation: Model.HasOneRelation,
+                    modelClass: Contact,
+                    join: {
+                        from: 'persons.id',
+                        to: 'contacts.personId'
+                    }
+                },
+                activities: {
+                    relation: Model.ManyToManyRelation,
+                    modelClass: Activity,
+                    join: {
+                        from: 'persons.id',
+                        through: {
+                            from: 'activities_persons.personId',
+                            to: 'activities_persons.activityId'
+                        },
+                        to: 'activities.id'
+                    }
+                },
+                vehicle: {
+                    relation: Model.HasOneThroughRelation,
+                    modelClass: Vehicle,
+                    join: {
+                        from: 'persons.id',
+                        through: {
+                            from: 'persons_vehicles.personId',
+                            to: 'persons_vehicles.vehicleId'
+                        },
+                        to: 'vehicles.id'
+                    }
+                }
+            });
+    });
 });

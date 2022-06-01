@@ -154,10 +154,10 @@ export class ModelRelationshipFacade<T extends Model> {
      * @param {(ModelClass<T> | string)} modelClass
      * @param {RelationshipEnum} relationshipTypeEnum
      * @param {IObjectionModelRelationshipAddConfig} [config]
-     * @return {*} 
+     * @return {ModelRelationshipFacade}  {this}
      * @memberof ModelRelationshipFacade
      */
-    public add(modelClass: ModelClass<T> | string, relationshipTypeEnum: RelationshipEnum, config?: IObjectionModelRelationshipAddConfig) {
+    public add(modelClass: ModelClass<T> | string, relationshipTypeEnum: RelationshipEnum, config?: IObjectionModelRelationshipAddConfig): this {
         if (((modelClass instanceof String || typeof modelClass == 'string') && !modelClass) || !(modelClass as ModelClass<T>).tableName)
             throw new Error('Model class param is empty or do not have tableName defined');
 
@@ -194,5 +194,65 @@ export class ModelRelationshipFacade<T extends Model> {
         this._relationshipModel[this.getRelationshipName(modelClass, relationshipTypeEnum)] = relationship;
 
         return this;
+    }
+
+    /**
+     * Shortcut for RelationshipEnum.BelongsToOneRelation
+     *
+     * @param {(ModelClass<T> | string)} modelClass
+     * @param {IObjectionModelRelationshipAddConfig} [config]
+     * @return {ModelRelationshipFacade}  {this}
+     * @memberof ModelRelationshipFacade
+     */
+    public belongsToOneRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+        return this.add(modelClass, RelationshipEnum.BelongsToOneRelation, config);
+    }
+
+    /**
+     * Shortcut for RelationshipEnum.HasManyRelation
+     *
+     * @param {(ModelClass<T> | string)} modelClass
+     * @param {IObjectionModelRelationshipAddConfig} [config]
+     * @return {ModelRelationshipFacade}  {this}
+     * @memberof ModelRelationshipFacade
+     */
+    public hasManyRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+        return this.add(modelClass, RelationshipEnum.HasManyRelation, config);
+    }
+
+    /**
+    * Shortcut for RelationshipEnum.HasOneRelation
+    *
+    * @param {(ModelClass<T> | string)} modelClass
+    * @param {IObjectionModelRelationshipAddConfig} [config]
+    * @return {ModelRelationshipFacade}  {this}
+    * @memberof ModelRelationshipFacade
+    */
+    public hasOneRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+        return this.add(modelClass, RelationshipEnum.HasOneRelation, config);
+    }
+
+    /**
+    * Shortcut for RelationshipEnum.ManyToManyRelation
+    *
+    * @param {(ModelClass<T> | string)} modelClass
+    * @param {IObjectionModelRelationshipAddConfig} [config]
+    * @return {ModelRelationshipFacade}  {this}
+    * @memberof ModelRelationshipFacade
+    */
+    public manyToManyRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+        return this.add(modelClass, RelationshipEnum.ManyToManyRelation, config);
+    }
+
+    /**
+     * Shortcut for RelationshipEnum.HasOneThroughRelation
+     *
+     * @param {(ModelClass<T> | string)} modelClass
+     * @param {IObjectionModelRelationshipAddConfig} [config]
+     * @return {ModelRelationshipFacade}  {this}
+     * @memberof ModelRelationshipFacade
+     */
+    public hasOneThroughRelation(modelClass: ModelClass<T> | string, config?: IObjectionModelRelationshipAddConfig): this {
+        return this.add(modelClass, RelationshipEnum.HasOneThroughRelation, config);
     }
 }
