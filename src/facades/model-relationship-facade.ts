@@ -198,7 +198,7 @@ export class ModelRelationshipFacade<T extends Model> {
             }
         }
 
-        this._relationshipModel[this.getRelationshipName(modelClass, relationshipTypeEnum)] = relationship;
+        this._relationshipModel[config?.relationName || this.getRelationshipName(modelClass, relationshipTypeEnum)] = relationship;
 
         return this;
     }

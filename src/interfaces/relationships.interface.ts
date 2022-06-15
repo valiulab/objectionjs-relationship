@@ -24,4 +24,5 @@ export interface IObjectionModelRelationshipAddConfig extends Partial<Omit<IObje
     toTable?: string;
     fromField?: string;
     toField?: string;
+    relationName?: string;
 }
