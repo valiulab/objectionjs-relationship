@@ -1,6 +1,6 @@
 {
   "name": "objectionjs-relationship",
-  "version": "1.2.7",
+  "version": "1.3.1",
   "description": "ObjectionJs Relationship facade to make relationship mapper more easier",
   "source": "src/index.ts",
   "main": "lib/index.js",
