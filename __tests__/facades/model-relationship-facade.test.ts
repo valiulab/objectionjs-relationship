@@ -180,7 +180,7 @@ describe("[Main Facade Test]", () => {
             .hasMany(Animal)
             .hasOne(Contact)
             .manyToMany(Activity)
-            .hasOneThrough(Vehicle).getRelationships())
+            .hasOneThrough(Vehicle).getRelationships({ log: true }))
             .toEqual({
                 country: {
                     relation: Model.BelongsToOneRelation,

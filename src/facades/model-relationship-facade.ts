@@ -1,7 +1,9 @@
+import { IRelationshipDebugOptions } from './../interfaces/relationships-debug-opt.interface';
 import { RelationshipEnum } from '../enums/relationship.enum';
 import { StringUtils } from '../utils/string.utils';
 import { Model, ModelClass, RelationType } from 'objection';
 import { IObjectionModelRelationship, IObjectionModelRelationshipAddConfig, IObjectionModelRelationshipSchema } from '../interfaces/relationships.interface';
+import _ from 'underscore'
 
 export class ModelRelationshipFacade<T extends Model> {
     private _relationshipModel: IObjectionModelRelationship<T> = {};
@@ -18,7 +20,12 @@ export class ModelRelationshipFacade<T extends Model> {
      * @return {*}  {IObjectionModelRelationship<T>}
      * @memberof ModelRelationshipFacade
      */
-    public getRelationships(): IObjectionModelRelationship<T> {
+    public getRelationships(opt?: IRelationshipDebugOptions<T>): IObjectionModelRelationship<T> {
+        if (opt) {
+            _.isFunction(opt?.log)
+                ? opt.log(this._relationshipModel)
+                : console.log(this._relationshipModel);
+        }
         return this._relationshipModel;
     }
 
