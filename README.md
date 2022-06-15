@@ -36,21 +36,21 @@ import {
   RelationshipEnum,
 } from "objectionjs-relationship";
 
-class Person extends Model {
-  static tableName = "persons";
-}
-
 class Animal extends Model {
   static tableName = "animals";
+}
+
+class Person extends Model {
+  static tableName = "persons";
 
   /** Example 1: */
-  static relationMappings = new ModelRelationshipFacade(Animal)
-    .belongsToOne(Person)
+  static relationMappings = new ModelRelationshipFacade(Person)
+    .belongsToOne(Animal)
     .getRelationships();
 
   /** Example 2: Or you can use the add function, sending the relation type */
-  static relationMappings = new ModelRelationshipFacade(Animal)
-    .add(Person, RelationshipEnum.BelongsToOneRelation)
+  static relationMappings = new ModelRelationshipFacade(Person)
+    .add(Animal, RelationshipEnum.BelongsToOneRelation)
     .getRelationships();
 
   // Result:
@@ -59,8 +59,8 @@ class Animal extends Model {
   //         relation: Model.BelongsToOneRelation,
   //         modelClass: Animal,
   //         join: {
-  //             from: 'animals.personId',
-  //             to: 'persons.id'
+  //             from: 'persons.animalId',
+  //             to: 'animals.id'
   //         }
   //     }
   // }
@@ -223,22 +223,38 @@ The same can be done with _through_ relationship. Read the _IObjectionModelRelat
 
 ### Debugger helper
 
-You can send a options object to the **getRelationships**, witch one of the props is **log**:
+You can send a options object to the **getRelationships**, witch one of the props is **log**
+
+This was created for the purpose of testing. Log param can be a boolean or a function that will get an IObjectionModelRelationship as a parameter to do whatever the function wants to do with the data, like print with a custom logger or something.
 
 ```js
-import { ModelRelationshipFacade } from "objectionjs-relationship";
-
-class Person extends Model {
-  static tableName = "persons";
-}
+import {
+  ModelRelationshipFacade,
+  IObjectionModelRelationship,
+} from "objectionjs-relationship";
 
 class Animal extends Model {
   static tableName = "animals";
+}
 
-  static relationMappings = new ModelRelationshipFacade(Animal)
-    .belongsToOne(Person)
+class Person extends Model {
+  static tableName = "persons";
+
+  /** Example with default logger */
+  static relationMappings = new ModelRelationshipFacade(Person)
+    .belongsToOne(Animal)
     .getRelationships({
       log: true,
+    });
+
+  /** Example with custom log strategy */
+  static relationMappings = new ModelRelationshipFacade(Person)
+    .belongsToOne(Animal)
+    .getRelationships({
+      log: (relations: IObjectionModelRelationship<Animal>) => {
+        // You can same logger or wathever you want
+        console.log(relations);
+      },
     });
 }
 ```
@@ -255,33 +271,6 @@ The terminal will show _(console.log as default)_:
             to: 'persons.id'
         }
     }
-}
-```
-
-This was created for the purpose of testing. Log param can be a boolean like before or a function that will get an IObjectionModelRelationship
-as a parameter to do whatever the function wants to do with the data, like print with a custom logger or something.
-
-```js
-import {
-  ModelRelationshipFacade,
-  IObjectionModelRelationship,
-} from "objectionjs-relationship";
-
-class Person extends Model {
-  static tableName = "persons";
-}
-
-class Animal extends Model {
-  static tableName = "animals";
-
-  static relationMappings = new ModelRelationshipFacade(Animal)
-    .belongsToOne(Person)
-    .getRelationships({
-      log: (relations: IObjectionModelRelationship<Animal>) => {
-        // You can same loger or wathever you want
-        console.log(relations);
-      },
-    });
 }
 ```
 
