@@ -8,7 +8,7 @@
   "scripts": {
     "build": "npx tsc",
     "test": "jest",
-    "doc": "typedoc --out docs src/index.ts",
+    "doc": "typedoc --theme oxide --name 'Objectionjs Relationship' --out docs src/index.ts",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run build",
     "version": "git add -A src",
@@ -21,11 +21,12 @@
     "@types/underscore": "^1.11.4",
     "jest": "^28.1.0",
     "ts-jest": "^28.0.3",
-    "typedoc": "^0.22.15",
+    "typedoc": "^0.22.17",
     "typescript": "^4.6.4"
   },
   "dependencies": {
     "objection": "github:ralcorta/objection.js",
+    "typedoc-theme-oxide": "^0.1.6",
     "underscore": "^1.13.4"
   },
   "repository": {
