@@ -44,6 +44,61 @@ describe("[Main Facade Test]", () => {
         });
     });
 
+    it("should return BelongsToOneRelation relationship object with specific relation name", () => {
+        const modelRelationshipFacade = new ModelRelationshipFacade(Person);
+        modelRelationshipFacade.belongsToOne(Animal, { relationName: 'pet' });
+        expect(modelRelationshipFacade.getRelationships()).toEqual({
+            pet: {
+                relation: Model.BelongsToOneRelation,
+                modelClass: Animal,
+                join: {
+                    from: 'persons.animalId',
+                    to: 'animals.id'
+                }
+            }
+        });
+    });
+
+    it("should return BelongsToOneRelation relationship object with specific relation name and specific base fields", () => {
+        const modelRelationshipFacade = new ModelRelationshipFacade(Person);
+        modelRelationshipFacade.belongsToOne(Animal, {
+            relationName: 'pet',
+            fromField: 'petId',
+            fromTable: 'owners',
+            toField: 'superId',
+            toTable: 'pets',
+        });
+        expect(modelRelationshipFacade.getRelationships()).toEqual({
+            pet: {
+                relation: Model.BelongsToOneRelation,
+                modelClass: Animal,
+                join: {
+                    from: 'owners.petId',
+                    to: 'pets.superId'
+                }
+            }
+        });
+    });
+
+    it("should return BelongsToOneRelation relationship object with specific relation name and specific fields of join", () => {
+        const modelRelationshipFacade = new ModelRelationshipFacade(Person);
+        modelRelationshipFacade.belongsToOne(Animal, {
+            relationName: 'pet',
+            from: 'owners.petId',
+            to: 'pets.superId'
+        });
+        expect(modelRelationshipFacade.getRelationships()).toEqual({
+            pet: {
+                relation: Model.BelongsToOneRelation,
+                modelClass: Animal,
+                join: {
+                    from: 'owners.petId',
+                    to: 'pets.superId'
+                }
+            }
+        });
+    });
+
     it("should return HasManyRelation relationship object", () => {
         const modelRelationshipFacade = new ModelRelationshipFacade(Person);
         modelRelationshipFacade.add(Animal, RelationshipEnum.HasManyRelation);
@@ -108,6 +163,31 @@ describe("[Main Facade Test]", () => {
                         // persons_animals is the join table.
                         from: 'animals_persons.personId',
                         to: 'animals_persons.animalId'
+                    },
+                    to: 'animals.id'
+                }
+            }
+        });
+    });
+
+    it("should return HasOneThroughRelation relationship object with specific relation through", () => {
+        const modelRelationshipFacade = new ModelRelationshipFacade(Person);
+        modelRelationshipFacade.hasOneThrough(Animal, {
+            through: {
+                from: 'pets_owners.ownerId',
+                to: 'pets_owners.petId',
+            }
+        });
+        expect(modelRelationshipFacade.getRelationships()).toEqual({
+            animal: {
+                relation: Model.HasOneThroughRelation,
+                modelClass: Animal,
+                join: {
+                    from: 'persons.id',
+                    through: {
+                        // persons_animals is the join table.
+                        from: 'pets_owners.ownerId',
+                        to: 'pets_owners.petId'
                     },
                     to: 'animals.id'
                 }
@@ -180,7 +260,7 @@ describe("[Main Facade Test]", () => {
             .hasMany(Animal)
             .hasOne(Contact)
             .manyToMany(Activity)
-            .hasOneThrough(Vehicle).getRelationships({ log: true }))
+            .hasOneThrough(Vehicle).getRelationships())
             .toEqual({
                 country: {
                     relation: Model.BelongsToOneRelation,

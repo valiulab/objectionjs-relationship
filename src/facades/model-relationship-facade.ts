@@ -171,18 +171,27 @@ export class ModelRelationshipFacade<T extends Model> {
         if (!this._modelClass.tableName)
             throw new Error('Base Model class passed on constructor do not have tableName defined');
 
-        const fromTable = config?.fromTable ?? this._modelClass.tableName;
-        const toTable = config?.toTable ?? this.getTableName(modelClass);
-        const fromField = config?.fromField ?? this.getFromField(modelClass, relationshipTypeEnum);
-        const toField = config?.toField ?? this.geToField(this._modelClass, relationshipTypeEnum);
+        const {
+            fromTable,
+            toTable,
+            fromField,
+            toField,
+            relationName,
+            ...joinConfig
+        } = config || {}
+
+        const finalFromTable = fromTable ?? this._modelClass.tableName;
+        const finalToTable = toTable ?? this.getTableName(modelClass);
+        const finalFromField = fromField ?? this.getFromField(modelClass, relationshipTypeEnum);
+        const finalToField = toField ?? this.geToField(this._modelClass, relationshipTypeEnum);
         const relation: RelationType = this.getRelationshipType(relationshipTypeEnum);
         const relationship: IObjectionModelRelationshipSchema<T> = {
             relation,
             modelClass,
             join: {
-                from: `${fromTable}.${fromField}`,
-                to: `${toTable}.${toField}`,
-                ...config,
+                from: `${finalFromTable}.${finalFromField}`,
+                to: `${finalToTable}.${finalToField}`,
+                ...joinConfig,
             }
         }
 
@@ -193,12 +202,12 @@ export class ModelRelationshipFacade<T extends Model> {
                 through: {
                     from: `${throughTable}.${this.getForeignKeyFieldName(this._modelClass)}`,
                     to: `${throughTable}.${this.getForeignKeyFieldName(modelClass)}`,
-                    ...config?.through
+                    ...joinConfig?.through
                 }
             }
         }
 
-        this._relationshipModel[config?.relationName || this.getRelationshipName(modelClass, relationshipTypeEnum)] = relationship;
+        this._relationshipModel[relationName || this.getRelationshipName(modelClass, relationshipTypeEnum)] = relationship;
 
         return this;
     }
