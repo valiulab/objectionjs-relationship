@@ -79,6 +79,7 @@ const relation = new ModelRelationshipFacade(Person)
   .hasOne(Contact)
   .manyToMany(Activity)
   .hasOneThrough(Vehicle);
+  .getRelationships();
 
 /** Example 2 */
 const relationWithAddFunction = new ModelRelationshipFacade(Person)
@@ -146,16 +147,150 @@ const relationWithAddFunction = new ModelRelationshipFacade(Person)
 
 **IObjectionModelRelationshipAddConfig:** This interface are the option that you can send to the add function and override the relation fields.
 
-These options can be provided when instantiating the plugin:
+These options can be provided when instantiating the plugin.
+
+#### Example 1
+
+```js
+import { ModelRelationshipFacade } from "objectionjs-relationship";
+
+class Animal extends Model {
+  static tableName = "pets";
+}
+
+class Person extends Model {
+  static tableName = "owners";
+
+  static relationMappings = new ModelRelationshipFacade(Person)
+    .belongsToOne(Animal, {
+      relationName: "pet",
+      fromField: "petId",
+      fromTable: "owners",
+      toField: "superId",
+      toTable: "pets",
+    })
+    .getRelationships();
+
+  // Result:
+  // static relationMappings: {
+  //   pet: {
+  //       relation: Model.BelongsToOneRelation,
+  //       modelClass: Animal,
+  //       join: {
+  //           from: 'owners.petId',
+  //           to: 'pets.superId'
+  //       }
+  //   }
+  // }
+}
+```
+
+#### Example 2
+
+```js
+import { ModelRelationshipFacade } from "objectionjs-relationship";
+
+class Animal extends Model {
+  static tableName = "pets";
+}
+
+class Person extends Model {
+  static tableName = "owners";
+
+  static relationMappings = new ModelRelationshipFacade(Person)
+    .belongsToOne(Animal, {
+      relationName: "pet",
+      from: "owners.petId",
+      to: "pets.superId",
+    })
+    .getRelationships();
+
+  // Result:
+  // static relationMappings: {
+  //   pet: {
+  //       relation: Model.BelongsToOneRelation,
+  //       modelClass: Animal,
+  //       join: {
+  //           from: 'owners.petId',
+  //           to: 'pets.superId'
+  //       }
+  //   }
+  // }
+}
+```
+
+The same can be done with _through_ relationship. Read the _IObjectionModelRelationshipAddConfig_ interface.
+
+### Debugger helper
+
+You can send a options object to the **getRelationships**, witch one of the props is **log**:
+
+```js
+import { ModelRelationshipFacade } from "objectionjs-relationship";
+
+class Person extends Model {
+  static tableName = "persons";
+}
+
+class Animal extends Model {
+  static tableName = "animals";
+
+  static relationMappings = new ModelRelationshipFacade(Animal)
+    .belongsToOne(Person)
+    .getRelationships({
+      log: true,
+    });
+}
+```
+
+The terminal will show _(console.log as default)_:
+
+```
+{
+    animal: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Animal,
+        join: {
+            from: 'animals.personId',
+            to: 'persons.id'
+        }
+    }
+}
+```
+
+This was created for the purpose of testing. Log param can be a boolean like before or a function that will get an IObjectionModelRelationship
+as a parameter to do whatever the function wants to do with the data, like print with a custom logger or something.
+
+```js
+import {
+  ModelRelationshipFacade,
+  IObjectionModelRelationship,
+} from "objectionjs-relationship";
+
+class Person extends Model {
+  static tableName = "persons";
+}
+
+class Animal extends Model {
+  static tableName = "animals";
+
+  static relationMappings = new ModelRelationshipFacade(Animal)
+    .belongsToOne(Person)
+    .getRelationships({
+      log: (relations: IObjectionModelRelationship<Animal>) => {
+        // You can same loger or wathever you want
+        console.log(relations);
+      },
+    });
+}
+```
 
 ## Tests
 
 Run the tests from the root directory:
 
 ```sh
-
 npm test
-
 ```
 
 ## Contributing & Development

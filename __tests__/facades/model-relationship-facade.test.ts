@@ -1,3 +1,4 @@
+import { IObjectionModelRelationship } from './../../src/interfaces/relationships.interface';
 import { ModelRelationshipFacade } from './../../src/facades/model-relationship-facade';
 import { Model } from 'objection';
 import { RelationshipEnum } from '../../src/enums/relationship.enum';
@@ -33,6 +34,25 @@ describe("[Main Facade Test]", () => {
         const modelRelationshipFacade = new ModelRelationshipFacade(Person);
         modelRelationshipFacade.add(Animal, RelationshipEnum.BelongsToOneRelation);
         expect(modelRelationshipFacade.getRelationships()).toEqual({
+            animal: {
+                relation: Model.BelongsToOneRelation,
+                modelClass: Animal,
+                join: {
+                    from: 'persons.animalId',
+                    to: 'animals.id'
+                }
+            }
+        });
+    });
+
+    it("should return BelongsToOneRelation relationship object and log it", () => {
+        const modelRelationshipFacade = new ModelRelationshipFacade(Person);
+        modelRelationshipFacade.belongsToOne(Animal);
+        expect(modelRelationshipFacade.getRelationships({
+            log: (relations) => {
+                console.log(relations);
+            },
+        })).toEqual({
             animal: {
                 relation: Model.BelongsToOneRelation,
                 modelClass: Animal,
