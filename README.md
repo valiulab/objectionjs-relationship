@@ -6,12 +6,11 @@ This plugin provide a way to create relationship objects between [Objection.js](
 
 ## Doc
 
-For more documentation, you can view the [Github page](https://valiulab-core.github.io/objectionjs-relationship/) of this repository.
+For more documentation, you can view the [Github page](https://valiulab.github.io/objectionjs-relationship/) of this repository.
 
 ## Installation
 
 ### NPM
-
 ```sh
 
 npm i objectionjs-relationship --save
@@ -286,13 +285,13 @@ npm test
 
 ### Contributing
 
-Found a bug or want to suggest something? Take a look first on the current and closed [issues](https://github.com/valiulab-core/objectionjs-relationship/issues). If it is something new, please [submit an issue](https://github.com/valiulab-core/objectionjs-relationship/issues/new).
+Found a bug or want to suggest something? Take a look first on the current and closed [issues](https://github.com/valiulab/objectionjs-relationship/issues). If it is something new, please [submit an issue](https://github.com/valiulab/objectionjs-relationship/issues/new).
 
 ### Develop
 
 It will be awesome if you can help us evolve `objectionjs-relationship`. Want to help?
 
-1. [Fork it](https://github.com/valiulab-core/objectionjs-relationship).
+1. [Fork it](https://github.com/valiulab/objectionjs-relationship).
 
 2. `npm install`.
 
@@ -300,7 +299,7 @@ It will be awesome if you can help us evolve `objectionjs-relationship`. Want to
 
 4. Run the tests: `npm test`.
 
-5. Create a [Pull Request](https://github.com/valiulab-core/objectionjs-relationship/compare).
+5. Create a [Pull Request](https://github.com/valiulab/objectionjs-relationship/compare).
 
 ## License
 
