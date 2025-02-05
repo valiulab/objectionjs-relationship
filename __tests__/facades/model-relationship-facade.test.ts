@@ -1,7 +1,6 @@
-import { IObjectionModelRelationship } from './../../src/interfaces/relationships.interface';
-import { ModelRelationshipFacade } from './../../src/facades/model-relationship-facade';
 import { Model } from 'objection';
 import { RelationshipEnum } from '../../src/enums/relationship.enum';
+import { ModelRelationshipFacade } from './../../src/facades/model-relationship-facade';
 
 class Person extends Model {
     static tableName = 'persons';
